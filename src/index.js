@@ -11,6 +11,7 @@ import EditorAutosuggestPlugin from "./plugins/editor-autosuggest"
 import EditorAutosuggestSnippetsPlugin from "./plugins/editor-autosuggest-snippets"
 import EditorAutosuggestKeywordsPlugin from "./plugins/editor-autosuggest-keywords"
 import EditorAutosuggestOAS3KeywordsPlugin from "./plugins/editor-autosuggest-oas3-keywords"
+import EditorAutosuggestSemanticAnnotation from "./plugins/editor-autosuggest-semantic-annotation"
 import EditorAutosuggestRefsPlugin from "./plugins/editor-autosuggest-refs"
 import PerformancePlugin from "./plugins/performance"
 import JumpToPathPlugin from "./plugins/jump-to-path"
@@ -33,6 +34,7 @@ const plugins = {
   EditorAutosuggestKeywordsPlugin,
   EditorAutosuggestRefsPlugin,
   EditorAutosuggestOAS3KeywordsPlugin,
+  EditorAutosuggestSemanticAnnotation,
   PerformancePlugin,
   JumpToPathPlugin,
   SplitPaneModePlugin,
