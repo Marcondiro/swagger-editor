@@ -120,7 +120,7 @@ function getChild(object, key) {
       return null
     }
 
-    regex = new RegExp(childVal.__regex || keys[i])
+    regex = new RegExp("^" + (childVal.__regex || keys[i]))
 
     if (regex.test(key) && childVal) {
       if(typeof childVal === "object" && !isArray(childVal)) {
