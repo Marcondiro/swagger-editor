@@ -25,23 +25,29 @@ export default function getKeywordsForPath({ system, path, keywordMap}) {
   }
 
   if(isArray(keywordMap)) {
-    return keywordMap
-      .map(entry => {
+    const completion = keywordMap
+      .map((entry, i) => {
         return {
           caption: entry.caption,
           snippet: entry.snippet,
-          meta: "annotation",
+          meta: "annotation (confidence " + 1.0/(i+1) + ")",
           score: 500
         }
       })
+    return completion
   }
 
   if(keywordMap["x-semanticAnnotation"]) {
     return [{
       value: "x-semanticAnnotation: ",
       meta: "keyword",
-      score: 300
-    }]
+      score: 301
+    },
+    {
+      value: "x-semanticAnnotation: http:/example.com/annotazione_migliore_consigliata",
+      meta: "keyword",
+      score: 302
+    },]
   }
 
 }
