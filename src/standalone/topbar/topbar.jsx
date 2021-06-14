@@ -17,7 +17,21 @@ export default class Topbar extends React.Component {
       swaggerClient: null,
       clients: [],
       servers: [],
-      definitionVersion: "Unknown"
+      definitionVersion: "Unknown",
+      semanticServices: [
+        {
+          serviceName:'Mantis Table', 
+          url:'http://localhost:5000',
+          bodyType:'OAS',
+          isLastUsed: false,
+        },
+        {
+          serviceName:'Wikidata',
+          url:'https://wikidata.reconci.link/en/api',
+          bodyType:'reconciliation_query',
+          isLastUsed: false
+        },
+      ]
     }
   }
 
@@ -309,11 +323,21 @@ export default class Topbar extends React.Component {
     }
   }
 
+  updateLastUsedService = (lastUsedService) => {
+    this.setState({
+      semanticServices: this.state.semanticServices.map((v, i) => 
+        i === lastUsedService  ? {...v, isLastUsed: true} : {...v, isLastUsed: false} 
+      )
+    })
+    console.log(this.state.semanticServices)
+  }
+
   render() {
     let { getComponent, specSelectors, topbarActions } = this.props
     const Link = getComponent("Link")
     const TopbarInsert = getComponent("TopbarInsert")
     const ImportFileMenuItem = getComponent("ImportFileMenuItem")
+    const LoadSemanticMenuItem = getComponent("LoadSemanticMenuItem")
     const ConvertDefinitionMenuItem = getComponent("ConvertDefinitionMenuItem")
 
     let showServersMenu = this.state.servers && this.state.servers.length
@@ -375,6 +399,23 @@ export default class Topbar extends React.Component {
               { this.state.clients
                   .map((cli, i) => <li key={i}><button type="button" onClick={this.downloadGeneratedFile.bind(null, "client", cli)}>{cli}</button></li>) }
             </DropdownMenu> : null }
+            <DropdownMenu {...makeMenuOptions("Semantic Annotations")}>
+              { this.state.semanticServices.map((service, i) =>
+                  <LoadSemanticMenuItem onClick={() => this.updateLastUsedService(i)} {...service} {...this.props}/>
+                )
+              }
+              <li role="separator"></li>
+              <li>
+                <button type="button" onClick={() => alert('TODO')}>
+                  ➕ add new service
+                </button>
+              </li>
+              <li>
+                <button type="button" onClick={() => alert('TODO')}>
+                  ➖ remove service
+                </button>
+              </li>
+            </DropdownMenu>
           </div>
         </div>
       </div>

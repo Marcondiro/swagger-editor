@@ -1,4 +1,4 @@
-export default [
+let vocabulary = [
 
   {
     caption: "city",
@@ -20,4 +20,6 @@ export default [
     snippet: "http://dbpedia.org/resource/Tag_(metadata)",
   },
 
-]
+];
+
+export default vocabulary;

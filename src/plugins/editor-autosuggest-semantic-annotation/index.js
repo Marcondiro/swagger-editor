@@ -5,7 +5,12 @@ export default function EditorAutosuggestSemanticAnnotationPlugin() {
     statePlugins: {
       editor: {
         wrapActions,
-      }
-    }
+      },
+      semanticAnnotations: {
+        selectors: {
+          selectVocabulary: (state) => state.get("vocabulary")
+        },
+      },
+    },
   }
 }
