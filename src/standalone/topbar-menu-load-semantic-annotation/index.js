@@ -1,8 +1,10 @@
 import LoadSemanticMenuItem from "./components/LoadSemanticMenuItem"
+import TopbarSemanticAnnotations from "./topbar-semantic-annotations"
 
 export default {
   components: {
-    LoadSemanticMenuItem
+    TopbarSemanticAnnotations,
+    LoadSemanticMenuItem,
   },
   statePlugins: {
     semanticAnnotations: {

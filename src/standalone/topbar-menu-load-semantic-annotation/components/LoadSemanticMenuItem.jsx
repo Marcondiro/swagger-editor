@@ -40,15 +40,18 @@ export default class LoadSemanticMenuItem extends Component {
     return encodeURI(queries);
   }
 
-  reconCandidates2vocabulary(candidates) {
+  reconCandidates2vocabulary = (candidates) => {
     const vocabulary = Object.fromEntries(Object.entries(candidates).map(([k, v]) => {
       const objSuggestions = v.result.map((entry) => {
         const type = entry.type != undefined && entry.type.length > 0 ? entry.type[0].name : undefined
+        const snippet = this.props.prefixURL && this.props.prefixURL.length > 0 ?
+          this.props.prefixURL.replace('{{id}}', entry.id) :
+          entry.id
         return {
           caption: entry.name,
-          snippet: entry.id,
+          snippet: snippet,
           score: entry.score,
-          meta: "score: " + entry.score + ", type: " + type,
+          meta: "score: " + entry.score + (type ? ", type: " + type : ''),
         }})
       return [k, objSuggestions]
     }))
@@ -72,23 +75,19 @@ export default class LoadSemanticMenuItem extends Component {
   }
 
   loadFromURL = () => {
-    console.log(this.props)
     const url = this.props.url;
     const requestOptions = {
       method: 'POST',
       headers: {
-        'Content-Type': this.props.bodyType == 'OAS' ? 
+        'Content-Type': this.props.bodyType === 'OAS' ? 
           MIME[this.getDefinitionLanguage()] :
           'application/x-www-form-urlencoded'
       },
-      body: this.props.bodyType == 'OAS' ?
+      body: this.props.bodyType === 'OAS' ?
         JSON.stringify(this.props.specSelectors.specStr()) :
         this.makeReconciliationQuery(),
     };
 
-    //const url_default = this.props.bodyType === 'OAS' ? 'http://localhost:5000' : 'https://wikidata.reconci.link/en/api'
-    //let url = prompt("Enter the URL to load from:", url_default)
-    
     this.setState({
       loading: true
     });
@@ -96,6 +95,7 @@ export default class LoadSemanticMenuItem extends Component {
     fetch(url, requestOptions)
       .then(res => res.json())
       .then(json => {
+console.log(json)
         this.insertMatchingAnnotations(json)
         const newVocabulary = this.reconCandidates2vocabulary(json)
         this.props.semanticAnnotationsActions.updateVocabulary(newVocabulary)
